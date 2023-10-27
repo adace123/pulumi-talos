@@ -18,10 +18,11 @@ func main() {
 			ClusterName:     pulumi.String("exampleCluster"),
 			MachineType:     pulumi.String("controlplane"),
 			ClusterEndpoint: pulumi.String("https://cluster.local:6443"),
-			MachineSecrets:  secrets.MachineSecrets,
+			MachineSecrets:  secrets.ClientConfiguration.ToConfigurationMachineSecretsOutput(),
 		}, nil).ApplyT(func(invoke machine.ConfigurationResult) (*string, error) {
-			return invoke.MachineConfiguration, nil
-		}).(pulumi.StringPtrOutput)
+			return &invoke.MachineConfiguration, nil
+		}).(pulumi.StringOutput)
+
 		tmpJSON0, err := json.Marshal(map[string]interface{}{
 			"machine": map[string]interface{}{
 				"install": map[string]interface{}{
@@ -36,8 +37,8 @@ func main() {
 		json0 := string(tmpJSON0)
 
 		configurationApply, err := machine.NewConfigurationApply(ctx, "configurationApply", &machine.ConfigurationApplyArgs{
-			ClientConfiguration:       secrets.ClientConfiguration,
-			MachineConfigurationInput: *pulumi.String(configuration),
+			ClientConfiguration:       secrets.ClientConfiguration.ToConfigurationApplyClientConfigurationOutput(),
+			MachineConfigurationInput: configuration,
 			Node:                      pulumi.String("10.5.0.2"),
 			ConfigPatches: pulumi.StringArray{
 				pulumi.String(json0),
@@ -49,7 +50,7 @@ func main() {
 
 		_, err = machine.NewBootstrap(ctx, "bootstrap", &machine.BootstrapArgs{
 			Node:                pulumi.String("10.5.0.2"),
-			ClientConfiguration: secrets.ClientConfiguration,
+			ClientConfiguration: secrets.ClientConfiguration.ToBootstrapClientConfigurationOutput(),
 		}, pulumi.DependsOn([]pulumi.Resource{
 			configurationApply,
 		}))

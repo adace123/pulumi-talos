@@ -47,6 +47,10 @@ func (BootstrapClientConfigurationArgs) ElementType() reflect.Type {
 	return reflect.TypeOf((*BootstrapClientConfiguration)(nil)).Elem()
 }
 
+func (o SecretsClientConfigurationOutput) ToBootstrapClientConfigurationOutput() BootstrapClientConfigurationOutput {
+	return BootstrapClientConfigurationOutput(o.ToSecretsClientConfigurationOutput())
+}
+
 func (i BootstrapClientConfigurationArgs) ToBootstrapClientConfigurationOutput() BootstrapClientConfigurationOutput {
 	return i.ToBootstrapClientConfigurationOutputWithContext(context.Background())
 }
@@ -472,6 +476,10 @@ type ConfigurationApplyClientConfigurationOutput struct{ *pulumi.OutputState }
 
 func (ConfigurationApplyClientConfigurationOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*ConfigurationApplyClientConfiguration)(nil)).Elem()
+}
+
+func (o SecretsClientConfigurationOutput) ToConfigurationApplyClientConfigurationOutput() ConfigurationApplyClientConfigurationOutput {
+	return ConfigurationApplyClientConfigurationOutput(o.ToSecretsClientConfigurationOutput())
 }
 
 func (o ConfigurationApplyClientConfigurationOutput) ToConfigurationApplyClientConfigurationOutput() ConfigurationApplyClientConfigurationOutput {
@@ -2187,6 +2195,10 @@ type SecretsClientConfigurationOutput struct{ *pulumi.OutputState }
 
 func (SecretsClientConfigurationOutput) ElementType() reflect.Type {
 	return reflect.TypeOf((*SecretsClientConfiguration)(nil)).Elem()
+}
+
+func (o SecretsClientConfigurationOutput) ToConfigurationMachineSecretsOutput() ConfigurationMachineSecretsOutput {
+	return ConfigurationMachineSecretsOutput(o.ToSecretsClientConfigurationOutput())
 }
 
 func (o SecretsClientConfigurationOutput) ToSecretsClientConfigurationOutput() SecretsClientConfigurationOutput {
